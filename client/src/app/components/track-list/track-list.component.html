@@ -1,0 +1,22 @@
+<!-- track-list.component.html -->
+<table class="table table-sm table-light table-striped" *ngIf="tracks">
+	<thead>
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">Track</th>
+		<th scope="col">Duration</th>
+		<th scope="col" *ngIf="!hideArtist">Primary Artist</th>
+		<th scope="col" *ngIf="!hideAlbum">Album</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr *ngFor="let track of tracks; let i = index">
+		<td>{{ i + 1 }}</td>
+		<td>{{ track.name }}</td>
+		<td>{{ track.durationStr }}</td>
+		<td *ngIf="!hideArtist">{{ track.primaryArtist.name }}</td>
+		<td *ngIf="!hideAlbum">{{ track.album?.name }}</td>
+	  </tr>
+	</tbody>
+  </table>
+  
