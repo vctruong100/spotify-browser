@@ -4,11 +4,13 @@ import { ArtistData } from '../../data/artist-data';
 import { TrackData } from '../../data/track-data';
 import { AlbumData } from '../../data/album-data';
 import { CommonModule } from '@angular/common';
+import { SpotifyService } from '../../services/spotify.service';
+import { TrackListComponent } from '../../components/track-list/track-list.component';
 
 @Component({
   selector: 'app-album-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TrackListComponent],
   templateUrl: './album-page.component.html',
   styleUrl: './album-page.component.scss'
 })
@@ -18,12 +20,17 @@ export class AlbumPageComponent implements OnInit {
 	album:AlbumData | undefined;
 	tracks:TrackData[] | undefined;
 
+  constructor(
+    private route: ActivatedRoute,
+    private spotifyService: SpotifyService
+    ) { }
 
-  constructor(private route: ActivatedRoute) { }
-
-  ngOnInit() {
-  	this.albumId = this.route.snapshot.paramMap.get('id') || "";
-  	//TODO: inject spotifyService and use it to get the album data and the tracks for the album
-  }
+    ngOnInit() {
+      this.albumId = this.route.snapshot.paramMap.get('id') || "";
+      if (this.albumId) {
+        this.spotifyService.getAlbum(this.albumId).then(data => this.album = data);
+        this.spotifyService.getTracksForAlbum(this.albumId).then(data => this.tracks = data);
+      }
+    }
 
 }

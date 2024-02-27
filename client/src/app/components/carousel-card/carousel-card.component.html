@@ -1,4 +1,5 @@
-<a [href]="resource?.url"> 
+<!-- Dynamically generates a hyperlink based on the resource's category, directing to the appropriate page (album or artist). -->
+<a [href]="resource?.category === 'album' ? '/album/' + resource?.id : '/artist/' + resource?.id">
 	<img [src]="resource?.imageURL" class="d-block w-100">
 	<div class="carousel-caption d-none d-md-block">
 	  <h5>{{ resource?.name }}</h5>

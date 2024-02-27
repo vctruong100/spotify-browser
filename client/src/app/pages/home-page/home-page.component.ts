@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AboutComponent } from '../../components/about/about.component';
 import { SearchComponent } from '../../components/search/search.component';
+import { SpotifyService } from '../../services/spotify.service';
+import { TrackData } from '../../data/track-data';
 
 @Component({
   selector: 'app-home-page',
@@ -10,11 +12,16 @@ import { SearchComponent } from '../../components/search/search.component';
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent implements OnInit {
+  topTracks: TrackData[] | undefined;
 
-  constructor() { }
+  constructor(private spotifyService: SpotifyService) { }
 
-  ngOnInit(): void {
-    
+// Fetches the top tracks from Spotify on component initialization 
+// and stores them for display.
+  ngOnInit() {
+    this.spotifyService.getTopTracks().then(tracks => {
+      this.topTracks = tracks;
+    });
   }
 
 }

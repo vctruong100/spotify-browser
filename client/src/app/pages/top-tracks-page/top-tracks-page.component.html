@@ -1,0 +1,21 @@
+<!-- Constructs a grid layout displaying cards for each top track, 
+    including album cover, track name, album name, artist, duration, and a detail link. -->
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-4 mb-3" *ngFor="let track of topTracks; let i = index">
+        <div class="card h-100">
+          <img class="card-img-top" [src]="track.album?.imageURL" alt="Album cover">
+          <div class="card-body">
+            <h5 class="card-title">{{ track.name }}</h5>
+            <p class="card-text">Album: {{ track.album?.name }}</p>
+            <p class="card-text">Artist: {{ track.primaryArtist.name }}</p>
+            <p class="card-text">Duration: {{ track.durationStr }}</p>
+          </div>
+          <div class="card-footer">
+            <a href="/track/{{ track.id }}" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -32,7 +32,8 @@ export class SpotifyService {
       return new ProfileData(data);
     });
   }
-
+  
+// Performs a search operation in Spotify for artists, albums, or tracks, mapping the response to appropriate data models.
   searchFor(category: string, resource: string): Promise<ResourceData[]> {
     const encodedResource = encodeURIComponent(resource);
     return this.sendRequestToExpress(`/search/${category}/${encodedResource}`).then((data) => {
@@ -56,17 +57,17 @@ export class SpotifyService {
   }
 
   getRelatedArtists(artistId: string): Promise<ArtistData[]> {
-    const endpoint = `/related-artists/${encodeURIComponent(artistId)}`;
+    const endpoint = `/artist-related-artists/${encodeURIComponent(artistId)}`;
     return this.sendRequestToExpress(endpoint).then(data => data.artists.map((item: any) => new ArtistData(item)));
   }
 
-  getTopTracksForArtist(artistId: string, country: string): Promise<TrackData[]> {
-    const endpoint = `/top-tracks/${encodeURIComponent(artistId)}?country=${country}`;
+  getTopTracksForArtist(artistId: string): Promise<TrackData[]> {
+    const endpoint = `/artist-top-tracks/${encodeURIComponent(artistId)}`;
     return this.sendRequestToExpress(endpoint).then(data => data.tracks.map((item: any) => new TrackData(item)));
   }
 
   getAlbumsForArtist(artistId: string): Promise<AlbumData[]> {
-    const endpoint = `/albums/${encodeURIComponent(artistId)}`;
+    const endpoint = `/artist-albums/${encodeURIComponent(artistId)}`;
     return this.sendRequestToExpress(endpoint).then(data => data.items.map((item: any) => new AlbumData(item)));
   }
 
@@ -86,7 +87,14 @@ export class SpotifyService {
   }
 
   getAudioFeaturesForTrack(trackId: string): Promise<TrackFeature[]> {
-    const endpoint = `/track-features/${encodeURIComponent(trackId)}`;
-    return this.sendRequestToExpress(endpoint).then(data => data.map((item: any) => new TrackFeature(item.feature, item.percent)));
+    return this.sendRequestToExpress(`/track-audio-features/${encodeURIComponent(trackId)}`).then((data) => {
+      return TrackFeature.FeatureTypes.map(type => new TrackFeature(type, data[type]));
+    });
+  }
+
+  getTopTracks(): Promise<TrackData[]> {
+    return this.sendRequestToExpress('/me/top/tracks').then((data) => {
+      return data.items.map((item: any) => new TrackData(item));
+    });
   }
 }

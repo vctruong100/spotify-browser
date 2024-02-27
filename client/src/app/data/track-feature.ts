@@ -1,5 +1,4 @@
-//TODO: install the chroma module
-//import * as chroma from 'chroma-js';
+import * as chroma from 'chroma-js';
 
 export class TrackFeature {
 	static FeatureTypes = ['danceability', 'energy', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence'];
@@ -19,8 +18,6 @@ export class TrackFeature {
 	}
 
 	get color() {
-		return "";
-		//TODO: uncomment to return custom chroma mix based on percent
-		//return chroma.mix('red', 'green', this.percent, 'hsl').hex();
-	}
+		return chroma.mix('red', 'green', this.percent, 'hsl').hex();
+	  }
 }

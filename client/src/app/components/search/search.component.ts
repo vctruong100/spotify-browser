@@ -23,21 +23,20 @@ export class SearchComponent implements OnInit {
   searchCategory: string = 'artist';
   searchCategories: string[] = ['artist', 'album', 'track'];
   resources: ResourceData[] | undefined;
-  tracks: TrackData[] | undefined; // Add this if you need a separate property for tracks
+  tracks: TrackData[] | undefined;
 
   constructor(private spotifyService: SpotifyService) { }
 
   ngOnInit() {
   }
-
+// Executes a search operation based on the user's inputted search string 
+// and selected category (artist, album, or track), updating the UI with the results.
   search() {
     if (this.searchString) {
       this.spotifyService.searchFor(this.searchCategory, this.searchString).then((response) => {
         if (this.searchCategory === 'track') {
-          // Cast the response to TrackData[]
           this.tracks = response as TrackData[];
         } else {
-          // Cast the response to ResourceData[]
           this.resources = response as ResourceData[];
         }
       }).catch((error) => {
